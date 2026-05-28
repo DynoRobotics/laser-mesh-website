@@ -107,6 +107,7 @@
       </a>
       <nav class="hidden md:flex items-center gap-7 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft">
         <a href="#problems" class="hover:text-copper">Problem</a>
+        <a href="#cost-trl" class="hover:text-copper">Kostnad &middot; TRL</a>
         <a href="#modules" class="hover:text-copper">Moduler</a>
         <a href="#platform" class="hover:text-copper">Plattform</a>
         <a href="#architecture" class="hover:text-copper">Arkitektur</a>
@@ -122,22 +123,23 @@
       <div class="max-w-6xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
         <div class="lg:col-span-6 lg:pt-6 order-2 lg:order-1">
           <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-6">
-            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-copper">Från rymden till marken</p>
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-copper">F&ouml;r F&ouml;rsvarsmaktens markenheter</p>
             <span class="font-mono text-[11px] text-bronze-dark/60">&middot;</span>
-            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze">Försvarets materielverk · CMIP PCP · 2026-06-03</p>
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze">FMV CMIP PCP &middot; civil-milit&auml;ra synergier &middot; 2026-06-03</p>
           </div>
           <h1 class="font-sans font-light text-[2.6rem] sm:text-[3.1rem] lg:text-[3.4rem] leading-[1.05] tracking-tightheading text-ink">
-            Modulär markrobotik med öppen systemarkitektur för subarktisk fältdrift.
+            Modul&auml;r markrobotik med &ouml;ppen systemarkitektur f&ouml;r subarktisk f&auml;ltdrift.
           </h1>
           <p class="mt-7 text-[1.075rem] lg:text-lg leading-relaxed text-ink-soft max-w-xl">
-            En svenskbyggd chassiplattform. Leverantörsutbytbara moduler för last,
+            En svenskbyggd chassiplattform. Leverant&ouml;rsutbytbara moduler f&ouml;r last,
             kommunikation, perception, manipulation och flygspaning. Ett
-            omnidirektionellt optiskt mesh som arbetar ärligt under partiell
-            information &mdash; byggt på Vantors plattform för rumslig intelligens
+            omnidirektionellt optiskt mesh som arbetar &auml;rligt under partiell
+            information &mdash; designat f&ouml;r kompatibilitet med Vantors
+            plattform f&ouml;r rumslig intelligens
             (<a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Forge</a>,
             <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Raptor</a>,
             <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Sentry</a>),
-            utökad till marken.
+            ut&ouml;kad till marken. <span class="block mt-3 font-mono text-[12px] text-bronze-dark/90">Konsortium: Dyno Robotics AB (prim&auml;r s&ouml;kande) + Vantor (mjukvarupartner, samtal p&aring;g&aring;r).</span>
           </p>
           <div class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 font-mono text-[12px] text-ink-soft">
             <span class="flex items-center gap-2"><span class="inline-block w-1.5 h-1.5 rounded-full bg-sage"></span> Öppet modulgränssnitt</span>
@@ -180,7 +182,7 @@
           inte plattformar. Rollen är utbytesenheten; kontraktet är det öppna
           gränssnittet. Samlingen av kontrakt <em class="not-italic">är</em>
           arkitekturen &mdash; vilket är vad
-          <span class="font-mono text-[0.95em] text-ink">&ldquo;tydligt definierade gr&auml;nsytor och &ouml;ppen systemarkitektur&rdquo;</span>
+          <span class="font-mono text-[0.95em] text-ink">&ldquo;tydliga definierade gr&auml;nsytor och &ouml;ppen systemarkitektur&rdquo;</span>
           betyder operativt.
         </p>
       </div>
@@ -192,25 +194,31 @@
         <div class="max-w-3xl">
           <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-5">Mänskliga problem vi löser</p>
           <h2 class="font-sans font-light text-[2rem] lg:text-[2.25rem] leading-tight tracking-tightheading text-ink">
-            FMV:s upphandlingsdokument namnger sju operativa problem. Två är lastbärande.
+            FMV namnger flera begr&auml;nsningar i dagens UGV-l&ouml;sningar.<br/>Tv&aring; &auml;r lastb&auml;rande f&ouml;r laser-mesh-arkitekturen.
           </h2>
           <p class="mt-5 text-ink-soft leading-relaxed">
-            Problem&nbsp;#1 och problem&nbsp;#3 är testet på om en liten-UGV-arkitektur
-            gör sitt lastbärande arbete. De övriga fem &mdash; enkelt uppbyggda UGV:er,
-            begränsad terrängframkomlighet, begränsad omvärldsuppfattning, otillräcklig
-            autonomi, kommunikationskrav &mdash; adresseras också av laser-mesh, men
-            argumentet står eller faller på dessa två.
+            FMV:s upphandlingsdokument (<span class="font-mono text-[0.95em]">fmv-liten-robot.md &sect;Bakgrund</span>)
+            beskriver i l&ouml;pande prosa flera begr&auml;nsningar &mdash;
+            enkelt uppbyggda UGV:er, begr&auml;nsad terr&auml;ngframkomlighet,
+            begr&auml;nsad omv&auml;rldsuppfattning, otillr&auml;cklig
+            autonomi, h&ouml;ga kommunikationskrav &mdash; och tv&aring;
+            framh&aring;llna problemomr&aring;den: <em>fram&aring;t m&auml;nsklig
+            risk</em> i milj&ouml;er d&auml;r f&ouml;rlust m&aring;ste
+            accepteras, och <em>operat&ouml;rens kognitiva belastning</em>.
+            Laser-mesh-arkitekturens stomme st&aring;r eller faller p&aring;
+            dessa tv&aring;; de &ouml;vriga adresseras ocks&aring; men
+            &auml;r inte de l&ouml;st-b&auml;rande testen.
           </p>
         </div>
 
         <!-- Problem 1 -->
         <article id="pain-forward-risk" class="mt-16 lg:mt-20 grid lg:grid-cols-12 gap-10 lg:gap-14">
           <header class="lg:col-span-4">
-            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-copper mb-3">Problem #1 &middot; FMV L18</p>
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-copper mb-3">M&auml;nsklig fram&aring;t-risk &middot; FMV &sect;Bakgrund</p>
             <h3 class="font-sans font-light text-[1.6rem] lg:text-[1.75rem] leading-tight tracking-tightheading text-ink">
-              Mänsklig risk i områden med hög risknivå.
+              M&auml;nsklig risk i omr&aring;den med h&ouml;g riskniv&aring;.
             </h3>
-            <p class="mt-4 font-mono text-[12px] uppercase tracking-[0.16em] text-bronze-dark">UGV:er finns för att människor inte ska behöva gå dit där förlust måste accepteras.</p>
+            <p class="mt-4 font-mono text-[12px] uppercase tracking-[0.16em] text-bronze-dark">FMV:s utg&aring;ngspunkt: UGV:er kan verka i omr&aring;den d&auml;r f&ouml;rlust av enskilda system m&aring;ste accepteras &mdash; arkitekturen ska maximera den verkan.</p>
           </header>
           <div class="lg:col-span-8 space-y-7">
             <div class="grid sm:grid-cols-2 gap-x-10 gap-y-7">
@@ -234,11 +242,11 @@
         <!-- Problem 3 -->
         <article id="pain-cognitive-load" class="grid lg:grid-cols-12 gap-10 lg:gap-14">
           <header class="lg:col-span-4">
-            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-copper mb-3">Problem #3 &middot; FMV L20</p>
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-copper mb-3">Operat&ouml;rens kognitiva belastning &middot; FMV &sect;Bakgrund</p>
             <h3 class="font-sans font-light text-[1.6rem] lg:text-[1.75rem] leading-tight tracking-tightheading text-ink">
-              Kognitiv belastning på operatören.
+              Kognitiv belastning p&aring; operat&ouml;ren.
             </h3>
-            <p class="mt-4 font-mono text-[12px] uppercase tracking-[0.16em] text-bronze-dark">Dagens fjärrstyrning innebär ofta en för hög kognitiv belastning för operatören.</p>
+            <p class="mt-4 font-mono text-[12px] uppercase tracking-[0.16em] text-bronze-dark"><em>&rdquo;Dagens fj&auml;rrstyrning inneb&auml;r ofta en allt f&ouml;r h&ouml;g kognitiv belastning f&ouml;r operat&ouml;ren.&rdquo;</em> &mdash; FMV</p>
           </header>
           <div class="lg:col-span-8 space-y-7">
             <div class="grid sm:grid-cols-2 gap-x-10 gap-y-7">
@@ -256,6 +264,67 @@
             </div>
           </div>
         </article>
+      </div>
+    </section>
+
+    <!-- Enhetspris och underh&aring;llskostnad + TRL-deklaration -->
+    <!-- Added per FMV fact-check 2026-05-28: FMV inbjudan L209 listar enhetspris som explicit fokusomr&aring;de #2; FMV genomf&ouml;rbarhet implicit kr&auml;ver TRL-deklaration -->
+    <section id="cost-trl" class="border-t border-bronze/20 py-20 lg:py-24">
+      <div class="max-w-6xl mx-auto px-6 lg:px-10">
+        <div class="max-w-3xl mb-12">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-5">Enhetspris &middot; underh&aring;ll &middot; TRL</p>
+          <h2 class="font-sans font-light text-[2rem] lg:text-[2.25rem] leading-tight tracking-tightheading text-ink">
+            Kostnadseffektivitet &auml;r en arkitekturell egenskap.<br/>TRL deklareras per modul.
+          </h2>
+          <p class="mt-5 text-ink-soft leading-relaxed">
+            FMV CMIP PCP namnger fyra explicita fokusomr&aring;den
+            (inbjudan &sect;3): &ouml;ppen systemarkitektur, <strong>enhetspris och
+            underh&aring;llskostnad</strong>, framkomlighet i terr&auml;ng,
+            avancerat operat&ouml;rsst&ouml;d. Och bed&ouml;mningskriteriet
+            <em>Genomf&ouml;rbarhet</em> f&ouml;ruts&auml;tter att vi
+            &auml;rligt namnger var vi &auml;r p&aring; mognadsskalan.
+          </p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8 lg:gap-10">
+
+          <article class="border border-bronze/30 bg-cream p-7 lg:p-8">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-copper mb-3">Kostnadsdiscipliner</p>
+            <h3 class="font-sans font-light text-[1.4rem] tracking-tightheading text-ink mb-4">Enhetspris och underh&aring;llskostnad</h3>
+            <ul class="space-y-3 text-[15px] text-ink-soft leading-relaxed">
+              <li class="flex gap-3"><span class="font-mono text-[12px] text-bronze-dark/70 mt-1.5">01</span><span>Modul-niv&aring; vendor-replaceability: en leverant&ouml;rs Mule + en annans Hand pratar samma mesh om de uppfyller fyra kontraktsytor &mdash; amorterar utvecklingskostnad &ouml;ver flera leverant&ouml;rer.</span></li>
+              <li class="flex gap-3"><span class="font-mono text-[12px] text-bronze-dark/70 mt-1.5">02</span><span>Host-agnostiska moduler: samma mast-, sensor- och manipulator-moduler k&ouml;r p&aring; konsortie-chassi <em>eller</em> kommersiella hostar (Clearpath Husky, AgileX Bunker Pro). Slipper l&aring;sning till en chassi-leverant&ouml;r.</span></li>
+              <li class="flex gap-3"><span class="font-mono text-[12px] text-bronze-dark/70 mt-1.5">03</span><span>Per-Lantern enhetskostnadsdisciplin: Lantern &auml;r en sj&auml;lvst&auml;ndig sl&auml;ppt-post-produkt som kan tillverkas i volym oberoende av chassit. Mass-produktion s&auml;nker per-enhetspriset n&auml;r m&aring;nga noder beh&ouml;vs.</span></li>
+              <li class="flex gap-3"><span class="font-mono text-[12px] text-bronze-dark/70 mt-1.5">04</span><span>Batteri-swap p&aring; 30 sekunder + IP-rated kabelglandningar + synliga service-luckor &mdash; designat f&ouml;r f&auml;lt-service utan specialverktyg. L&auml;gre livscykelkostnad.</span></li>
+              <li class="flex gap-3"><span class="font-mono text-[12px] text-bronze-dark/70 mt-1.5">05</span><span>Module-first per DR-ingest Q-FINAL: "portable first, platform-mounted second, bespoke mobility only if proven necessary" &mdash; bevisa moduler f&ouml;rst, commit till chassi-design senare. Mindre platform-risk i Fas 2-3.</span></li>
+            </ul>
+            <p class="mt-5 font-mono text-[11px] uppercase tracking-[0.16em] text-bronze-dark">Adresserar fokusomr&aring;de #2 (FMV inbjudan &sect;3)</p>
+          </article>
+
+          <article class="border border-bronze/30 bg-cream p-7 lg:p-8">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-copper mb-3">&Auml;rlig mognadsskala</p>
+            <h3 class="font-sans font-light text-[1.4rem] tracking-tightheading text-ink mb-4">TRL-deklaration per modul</h3>
+            <div class="space-y-3 text-[14px] text-ink-soft">
+              <div class="flex justify-between items-baseline border-b border-bronze/15 pb-2"><span>Substrat (ROS 2 + Zenoh)</span><span class="font-mono text-[12px] text-sage-dark">TRL 4&ndash;5</span></div>
+              <div class="flex justify-between items-baseline border-b border-bronze/15 pb-2"><span>Vantor Raptor (Guide/Sync/Ace)</span><span class="font-mono text-[12px] text-sage-dark">TRL 7&ndash;9</span></div>
+              <div class="flex justify-between items-baseline border-b border-bronze/15 pb-2"><span>Vantor Forge edge-deployment</span><span class="font-mono text-[12px] text-sage-dark">TRL 6&ndash;8</span></div>
+              <div class="flex justify-between items-baseline border-b border-bronze/15 pb-2"><span>Lantern-anchor (omnidir. optisk)</span><span class="font-mono text-[12px] text-copper">TRL 3</span></div>
+              <div class="flex justify-between items-baseline border-b border-bronze/15 pb-2"><span>Chassi-plattform v0.4</span><span class="font-mono text-[12px] text-copper">TRL 2&ndash;3</span></div>
+              <div class="flex justify-between items-baseline border-b border-bronze/15 pb-2"><span>Mast-, sensor-, cargo-moduler</span><span class="font-mono text-[12px] text-copper">TRL 3</span></div>
+              <div class="flex justify-between items-baseline border-b border-bronze/15 pb-2"><span>Manipulator-arm-modul (Hand)</span><span class="font-mono text-[12px] text-copper">TRL 2</span></div>
+              <div class="flex justify-between items-baseline border-b border-bronze/15 pb-2"><span>Aviary-modul (Sparrow chassi-sida)</span><span class="font-mono text-[12px] text-copper">TRL 2</span></div>
+              <div class="flex justify-between items-baseline pb-1"><span>Subarktisk-kalibrering &ouml;ver mesh</span><span class="font-mono text-[12px] text-copper">TRL 2 &middot; Fas 3-arbete</span></div>
+            </div>
+            <p class="mt-5 text-[13px] text-ink-soft leading-relaxed">
+              Renderingar p&aring; denna sida &auml;r konceptbilder mot
+              kanoniska kontraktsspecifikationer, inte fotografier av byggd
+              h&aring;rdvara. Fas 2-leveransen &auml;r ett papper-substrat;
+              Fas 3-demonstrationerna bygger och visar.
+            </p>
+            <p class="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-bronze-dark">Adresserar bed&ouml;mningskriterium: Genomf&ouml;rbarhet</p>
+          </article>
+
+        </div>
       </div>
     </section>
 
@@ -474,7 +543,7 @@
             <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Mission Solutions</p>
             <h3 class="font-sans font-light text-[1.5rem] tracking-tightheading text-ink">Sentry<sup class="text-[0.55em] text-bronze-dark/70 align-super">&trade;</sup></h3>
             <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.16em] text-copper">Global persistent övervakning</p>
-            <p class="mt-4 text-[15px] text-ink-soft leading-relaxed">Vantor Sentry kör det globala ISR-skiktet &mdash; Site Sentry över hundratals platser, Maritime Sentry över tusentals km² hav. Laser-mesh Fas 3 Sentry-påsats (perimeterövervakning på en chassiplattform) är den lokala marknivån i samma övervakningsloop. Samma mönster i livets gång; två observationsskalor.</p>
+            <p class="mt-4 text-[15px] text-ink-soft leading-relaxed">Vantor Sentry k&ouml;r det globala ISR-skiktet &mdash; Site Sentry &ouml;ver hundratals platser, Maritime Sentry &ouml;ver tusentals km&sup2; hav, byggt p&aring; Cortex + Forge. En kompletterande perimeter&ouml;verbliscksmodul p&aring; chassiplattformen skulle vara den lokala marknivån i samma &ouml;vervakningsloop &mdash; samma m&ouml;nster i livets g&aring;ng, tv&aring; observationsskalor. <em>Ligger utanf&ouml;r FMV:s demokast f&ouml;r 2026-06-03; namngiven post-Fas-3-konfiguration.</em></p>
             <ul class="mt-5 space-y-2 text-[14px] text-ink-soft">
               <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Global persistent övervakning över hundratals platser.</span></li>
               <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Automatiserad multi-konstellation-uppdragsplanering och tipping.</span></li>
@@ -671,8 +740,8 @@
             <p class="text-[15px] text-ink-soft leading-relaxed">Värmd skyddspunkt / laddning / operatörskomfort. Subarktiskt kritisk &mdash; där Anchor-Setter värmer händerna och Lanterns batteribyts.</p>
           </div>
           <div class="border border-bronze/30 bg-cream/70 p-5">
-            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Sentry &middot; <span class="text-copper normal-case tracking-normal">marknivå</span></p>
-            <p class="text-[15px] text-ink-soft leading-relaxed">Perimeterövervakningsmodul på chassiplattformen. Den lokala marknivån av <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Vantor Sentry</a>:s globala ISR &mdash; samma loop för mönster i livets gång, två observationshöjder.</p>
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Perimeter&ouml;verblick &middot; <span class="text-copper normal-case tracking-normal">post-Fas-3</span></p>
+            <p class="text-[15px] text-ink-soft leading-relaxed">Perimeter&ouml;verblicks-modul p&aring; chassiplattformen. Den lokala marknivån som komplement till <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Vantor Site Sentry</a>:s globala ISR &mdash; samma loop f&ouml;r m&ouml;nster i livets g&aring;ng, tv&aring; observationsh&ouml;jder. <em>Ligger utanf&ouml;r FMV:s demokast 2026-06-03.</em></p>
           </div>
           <div class="border border-bronze/30 bg-cream/70 p-5">
             <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Bellows</p>
@@ -766,6 +835,7 @@
       <div>
         <p>Oklassad &middot; civilingenjörsregister</p>
         <p class="mt-1">Forge, Raptor, Sentry &middot; varumärken hos Vantor</p>
+        <p class="mt-3 normal-case tracking-normal text-[11px] text-bronze-dark/70"><a href="narrative.html" class="hover:text-copper">L&auml;sning bredvid pitchen &rarr;</a></p>
       </div>
     </div>
   </footer>
