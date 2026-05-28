@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Laser-mesh — Modulär markrobotik med öppen systemarkitektur</title>
+  <meta name="description" content="Svenskbyggd modulär markrobotikplattform. Ett chassi, öppet modulgränssnitt, omnidirektionellt optiskt mesh. Byggd för subarktisk fältdrift och FMV CMIP PCP-upphandlingen." />
+
+  <!-- Typsnitt: IBM Plex Sans (brödtext + rubriker) + IBM Plex Mono (bildtexter, kapacitetssträngar) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    /*
+     * Palette inheritance — wheel-check trace 2026-05-28:
+     *
+     *  parent  : Balans v1.0 light-mode (operator-canonical Swedish-
+     *            minimalist design system, 2025-07-05)
+     *  specializes : laser-mesh-nordic-product-photo (operator, 2026-05-28)
+     *  rename  : civilian-engineering register
+     *  drop    : alliance-purple (WeaverMesh Zenoh, out-of-scope)
+     */
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'swedish-blue': {
+              DEFAULT: '#2c5aa0',
+              50: '#f0f4fa', 100: '#e1e9f5', 200: '#c3d3eb',
+              300: '#a5bde1', 400: '#87a7d7', 500: '#2c5aa0',
+              600: '#234a85', 700: '#1a3a6a', 800: '#112a4f', 900: '#081a34',
+            },
+            'birch-white': {
+              DEFAULT: '#f8f6f0',
+              50: '#fefefe', 100: '#fdfdfc', 200: '#fbfaf8',
+              300: '#f9f7f4', 400: '#f8f6f0', 500: '#f6f4ec',
+              600: '#f4f2e8', 700: '#f2f0e4', 800: '#f0eee0', 900: '#eeecdc',
+            },
+            'birch-wood': {
+              DEFAULT: '#d4b896',
+              50: '#faf8f4', 100: '#f5f1e9', 200: '#ebe3d3',
+              300: '#e1d5bd', 400: '#d7c7a7', 500: '#d4b896',
+              600: '#c9a67b', 700: '#be9460', 800: '#b38245', 900: '#a8702a',
+            },
+            sage: {
+              DEFAULT: '#8faa8b',
+              50: '#f6f8f6', 100: '#edf1ed', 200: '#dbe3db',
+              300: '#c9d5c9', 400: '#b7c7b7', 500: '#8faa8b',
+              600: '#7a9976', 700: '#658861', 800: '#50774c', 900: '#3b6637',
+            },
+            copper: {
+              DEFAULT: '#b87333',
+              50: '#faf6f1', 100: '#f5ede3', 200: '#ebdbc7',
+              300: '#e1c9ab', 400: '#d7b78f', 500: '#b87333',
+              600: '#a6652e', 700: '#945729', 800: '#824924', 900: '#703b1f',
+            },
+            gold: {
+              DEFAULT: '#c9a96e',
+              50: '#faf7f1', 100: '#f5efe3', 200: '#ebdfc7',
+              300: '#e1cfab', 400: '#d7bf8f', 500: '#c9a96e',
+              600: '#be9a59', 700: '#b38b44', 800: '#a87c2f', 900: '#9d6d1a',
+            },
+            silver: {
+              DEFAULT: '#b8c5d1',
+              50: '#f8f9fb', 100: '#f1f3f7', 200: '#e3e7ef',
+              300: '#d5dbe7', 400: '#c7cfdf', 500: '#b8c5d1',
+              600: '#a6b5c3', 700: '#94a5b5', 800: '#8295a7', 900: '#708599',
+            },
+            ink:         '#2A2724',
+            'ink-soft':  '#4A453F',
+            hardware:    '#1C1A18',
+            snow:        '#E8EAEB',
+            cream:        '#f8f6f0',
+            bronze:       '#be9460',
+            'bronze-dark':'#b38245',
+            'sage-dark':  '#658861',
+          },
+          fontFamily: {
+            sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
+          },
+          letterSpacing: {
+            tightish: '-0.01em',
+            tightheading: '-0.02em',
+          },
+        },
+      },
+    };
+  </script>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-cream text-ink font-sans antialiased selection:bg-sage/30">
+
+  <!-- Hoppa till innehåll-länk för tillgänglighet -->
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-3 focus:py-2 focus:bg-ink focus:text-cream focus:font-mono focus:text-xs">Hoppa till innehåll</a>
+
+  <!-- Header / minimal navigation -->
+  <header class="sticky top-0 z-40 bg-cream/85 backdrop-blur border-b border-bronze/25">
+    <div class="max-w-6xl mx-auto px-6 lg:px-10 py-4 flex items-center justify-between">
+      <a href="#top" class="flex items-baseline gap-3 group">
+        <span class="font-sans font-medium text-[15px] tracking-[0.18em] text-ink">VANTOR</span>
+        <span class="hidden sm:inline font-mono text-[11px] text-bronze-dark/80">/ laser-mesh &middot; markrobotik</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-7 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft">
+        <a href="#problems" class="hover:text-copper">Problem</a>
+        <a href="#modules" class="hover:text-copper">Moduler</a>
+        <a href="#platform" class="hover:text-copper">Plattform</a>
+        <a href="#architecture" class="hover:text-copper">Arkitektur</a>
+        <a href="#context" class="hover:text-copper">Kontext</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- Hero -->
+    <section id="top" class="relative pt-14 lg:pt-20 pb-20 lg:pb-28">
+      <div class="max-w-6xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+        <div class="lg:col-span-6 lg:pt-6 order-2 lg:order-1">
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-6">
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-copper">Från rymden till marken</p>
+            <span class="font-mono text-[11px] text-bronze-dark/60">&middot;</span>
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze">Försvarets materielverk · CMIP PCP · 2026-06-03</p>
+          </div>
+          <h1 class="font-sans font-light text-[2.6rem] sm:text-[3.1rem] lg:text-[3.4rem] leading-[1.05] tracking-tightheading text-ink">
+            Modulär markrobotik med öppen systemarkitektur för subarktisk fältdrift.
+          </h1>
+          <p class="mt-7 text-[1.075rem] lg:text-lg leading-relaxed text-ink-soft max-w-xl">
+            En svenskbyggd chassiplattform. Leverantörsutbytbara moduler för last,
+            kommunikation, perception, manipulation och flygspaning. Ett
+            omnidirektionellt optiskt mesh som arbetar ärligt under partiell
+            information &mdash; byggt på Vantors plattform för rumslig intelligens
+            (<a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Forge</a>,
+            <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Raptor</a>,
+            <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Sentry</a>),
+            utökad till marken.
+          </p>
+          <div class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 font-mono text-[12px] text-ink-soft">
+            <span class="flex items-center gap-2"><span class="inline-block w-1.5 h-1.5 rounded-full bg-sage"></span> Öppet modulgränssnitt</span>
+            <span class="flex items-center gap-2"><span class="inline-block w-1.5 h-1.5 rounded-full bg-sage"></span> Subarktiskt klassad</span>
+            <span class="flex items-center gap-2"><span class="inline-block w-1.5 h-1.5 rounded-full bg-sage"></span> Två-personers fältinsats</span>
+          </div>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <a href="#problems" class="inline-flex items-center gap-2 px-5 py-3 bg-ink text-cream font-mono text-[12px] uppercase tracking-[0.16em] hover:bg-hardware transition">Läs argumentet</a>
+            <a href="#modules" class="inline-flex items-center gap-2 px-5 py-3 border border-bronze/60 text-ink font-mono text-[12px] uppercase tracking-[0.16em] hover:border-copper hover:text-copper transition">Se modulerna</a>
+          </div>
+        </div>
+
+        <figure class="lg:col-span-6 order-1 lg:order-2">
+          <div class="border border-bronze/30 bg-snow/50">
+            <img src="assets/images/chassis-platform-v04-solo.png" alt="Laser-mesh chassiplattform stående i en svensk boreal skogsglänta. Synliga matta bronspaneler, fyra terrängdäck, två upphöjda mattsvarta U-loop-bärhandtag, utbytbart batteripaket med säkerhetsorangea snabbspärrar, och universella toppmontageskenor redo att ta emot en modul." class="w-full h-auto block" loading="eager" />
+          </div>
+          <figcaption class="mt-3 font-mono text-[11px] text-bronze-dark/80 flex flex-wrap gap-x-4 gap-y-1">
+            <span>Chassiplattform · v0.4</span>
+            <span>~75&ndash;85 &times; 45&ndash;55 cm &middot; ~25&ndash;35 kg</span>
+            <span>Två-personers sidohandtagsbärning</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Argumentet i ett stycke -->
+    <section class="border-t border-bronze/20 bg-snow/40">
+      <div class="max-w-4xl mx-auto px-6 lg:px-10 py-16 lg:py-20">
+        <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-5">Argumentet i ett stycke</p>
+        <p class="text-xl lg:text-[1.4rem] leading-relaxed text-ink font-light">
+          Ett chassi. Modulära påsatser för last, kommunikation, perception,
+          manipulation och flyginsats. Ett öppet modulgränssnitt som körs på
+          konsortiets referenschassi <em class="not-italic text-copper">eller</em>
+          på tredjeparts kommersiella UGV-värdar &mdash; Husky, Bunker Pro, Spot-klass.
+          Ett omnidirektionellt optiskt mesh som arbetar under partiell information
+          genom att synliggöra oenighet istället för att dölja den.
+        </p>
+        <p class="mt-6 text-base lg:text-lg leading-relaxed text-ink-soft">
+          Arkitekturen är strukturerad kring <span class="font-mono text-[0.95em] text-ink">rollkontrakt</span>,
+          inte plattformar. Rollen är utbytesenheten; kontraktet är det öppna
+          gränssnittet. Samlingen av kontrakt <em class="not-italic">är</em>
+          arkitekturen &mdash; vilket är vad
+          <span class="font-mono text-[0.95em] text-ink">&ldquo;tydligt definierade gr&auml;nsytor och &ouml;ppen systemarkitektur&rdquo;</span>
+          betyder operativt.
+        </p>
+      </div>
+    </section>
+
+    <!-- Mänskliga problem vi löser — de två lastbärande FMV-pains -->
+    <section id="problems" class="py-20 lg:py-28">
+      <div class="max-w-6xl mx-auto px-6 lg:px-10">
+        <div class="max-w-3xl">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-5">Mänskliga problem vi löser</p>
+          <h2 class="font-sans font-light text-[2rem] lg:text-[2.25rem] leading-tight tracking-tightheading text-ink">
+            FMV:s upphandlingsdokument namnger sju operativa problem. Två är lastbärande.
+          </h2>
+          <p class="mt-5 text-ink-soft leading-relaxed">
+            Problem&nbsp;#1 och problem&nbsp;#3 är testet på om en liten-UGV-arkitektur
+            gör sitt lastbärande arbete. De övriga fem &mdash; enkelt uppbyggda UGV:er,
+            begränsad terrängframkomlighet, begränsad omvärldsuppfattning, otillräcklig
+            autonomi, kommunikationskrav &mdash; adresseras också av laser-mesh, men
+            argumentet står eller faller på dessa två.
+          </p>
+        </div>
+
+        <!-- Problem 1 -->
+        <article id="pain-forward-risk" class="mt-16 lg:mt-20 grid lg:grid-cols-12 gap-10 lg:gap-14">
+          <header class="lg:col-span-4">
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-copper mb-3">Problem #1 &middot; FMV L18</p>
+            <h3 class="font-sans font-light text-[1.6rem] lg:text-[1.75rem] leading-tight tracking-tightheading text-ink">
+              Mänsklig risk i områden med hög risknivå.
+            </h3>
+            <p class="mt-4 font-mono text-[12px] uppercase tracking-[0.16em] text-bronze-dark">UGV:er finns för att människor inte ska behöva gå dit där förlust måste accepteras.</p>
+          </header>
+          <div class="lg:col-span-8 space-y-7">
+            <div class="grid sm:grid-cols-2 gap-x-10 gap-y-7">
+              <div>
+                <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-bronze-dark mb-2">Idag</p>
+                <p class="text-ink-soft leading-relaxed">En liten kommunikationsrelä kan väga så mycket att den kräver en besättning för att placeras. En fältoperatör måste gå in för att släppa och bekräfta ankare. En förlorad UGV är en enkelt uppbyggd plattform som ersätts en-för-en.</p>
+              </div>
+              <div>
+                <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-sage-dark mb-2">Med laser-mesh</p>
+                <p class="text-ink-soft leading-relaxed">Chassi ~25&ndash;35 kg, två-personers sidohandtagsbärning från en säker upphämtningspunkt. Lantern är termosstora &mdash; en tekniker bär flera i en hård transportväska. <span class="font-mono text-[0.95em] text-ink">Hand</span>-modulen placerar och flyttar ankare autonomt när insatslivscykeln mognar. Den mänskliga rollen <span class="font-mono text-[0.95em] text-ink">Anchor-Setter</span> bevaras tidigt och minskar synligt över tid.</p>
+              </div>
+            </div>
+            <div class="border-l-2 border-copper/60 pl-5 py-2">
+              <p class="text-ink-soft leading-relaxed"><span class="font-medium text-ink">Arkitekturell primitiv.</span> Förlust är per kontrakt, inte per plattform. Om en Relays mastmodul fallerar gör chassit under det inte &mdash; samma chassi omdisponeras med en lastmodul som en Mule under resten av uppdraget. <em class="not-italic">Det som går sönder är litet och namngivet.</em></p>
+            </div>
+          </div>
+        </article>
+
+        <hr class="my-16 lg:my-20 border-bronze/25" />
+
+        <!-- Problem 3 -->
+        <article id="pain-cognitive-load" class="grid lg:grid-cols-12 gap-10 lg:gap-14">
+          <header class="lg:col-span-4">
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-copper mb-3">Problem #3 &middot; FMV L20</p>
+            <h3 class="font-sans font-light text-[1.6rem] lg:text-[1.75rem] leading-tight tracking-tightheading text-ink">
+              Kognitiv belastning på operatören.
+            </h3>
+            <p class="mt-4 font-mono text-[12px] uppercase tracking-[0.16em] text-bronze-dark">Dagens fjärrstyrning innebär ofta en för hög kognitiv belastning för operatören.</p>
+          </header>
+          <div class="lg:col-span-8 space-y-7">
+            <div class="grid sm:grid-cols-2 gap-x-10 gap-y-7">
+              <div>
+                <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-bronze-dark mb-2">Idag</p>
+                <p class="text-ink-soft leading-relaxed">Operatörsskärmar översvämmas av råa strömmar. Sensorsoenigheter samordnas tyst eller begravs i loggar. När en kommunikationslänk är på väg att fallera får man veta det när den fallerar. Det finns inget rent sätt att agera nu och granska senare.</p>
+              </div>
+              <div>
+                <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-sage-dark mb-2">Med laser-mesh</p>
+                <p class="text-ink-soft leading-relaxed">Gränssnittet <span class="font-mono text-[0.95em] text-ink">disagreement-surface</span> visar endast där mesh-nätets partiella sanningar avviker &mdash; en sammansatt varning från tre källor, inte tre konkurrerande larm. Åldersfärg visar färskhet; ingenting läses som grönt som standard. <span class="font-mono text-[0.95em] text-ink">Link-state-as-mission-geometry</span> synliggör <em class="not-italic">krökning, åtta minuter från tystnad</em> innan en länk dör. <span class="font-mono text-[0.95em] text-ink">Approve-with-review-flag</span> låter operatören bekräfta nu och granska efter att arbetet landat.</p>
+              </div>
+            </div>
+            <div class="border-l-2 border-copper/60 pl-5 py-2">
+              <p class="text-ink-soft leading-relaxed"><span class="font-medium text-ink">Arkitekturell primitiv.</span> Minskad kognitiv belastning på operatören betyder inte färre signaler &mdash; det betyder signaler som anländer med rätt brådska. Disagreement-surface är den operativa formen av den distinktionen.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Moduler — demokasten -->
+    <section id="modules" class="border-t border-bronze/20 bg-snow/40 py-20 lg:py-28">
+      <div class="max-w-6xl mx-auto px-6 lg:px-10">
+        <div class="max-w-3xl">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-5">Demokasten</p>
+          <h2 class="font-sans font-light text-[2rem] lg:text-[2.25rem] leading-tight tracking-tightheading text-ink">
+            Ett chassi. Sex konfigurationer. Ett fristående ankare.
+          </h2>
+          <p class="mt-5 text-ink-soft leading-relaxed">
+            Varje markburen karaktär är samma gemensamma chassi med en annan modul
+            dockad på de universella toppmontageskenorna. Den fristående Lantern är
+            sin egen formfaktor &mdash; ett släppt ankare som fungerar som
+            positioneringsreferens för hela mesh-nätet.
+          </p>
+        </div>
+
+        <div class="mt-16 lg:mt-20 space-y-20 lg:space-y-24">
+
+          <!-- Mule -->
+          <article class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start" id="module-mule">
+            <figure class="lg:col-span-7">
+              <div class="border border-bronze/30 bg-cream">
+                <img src="assets/images/mule-v02-cargo-deck.png" alt="Mule-konfiguration: chassiplattform med ett lågprofilslastdäck på toppmontageskenorna, en Pelican-klass-transportväska fastspänd på däcket med salviegröna nylonremmar." class="w-full h-auto block" loading="lazy" />
+              </div>
+              <figcaption class="mt-3 font-mono text-[11px] text-bronze-dark/80">Mule &middot; v0.2 &middot; chassi + lastmodul</figcaption>
+            </figure>
+            <div class="lg:col-span-5">
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-3">Karaktär 01</p>
+              <h3 class="font-sans font-light text-[1.75rem] tracking-tightheading text-ink">Mule</h3>
+              <p class="mt-3 text-ink-soft leading-relaxed">Lasttransport med body-feel-as-trafficability-publicering. Flyttar last över snö som kartan sa var preparerad och rapporterar tillbaka när snön inte håller med.</p>
+              <ul class="mt-5 space-y-2.5 text-[15px] text-ink-soft">
+                <li class="flex gap-3"><span class="text-sage mt-1.5 inline-block w-1 h-1 rounded-full bg-sage flex-none"></span><span>Lastdäck på universella skenor, 4&ndash;6 spännankare, lastsensorering per däck.</span></li>
+                <li class="flex gap-3"><span class="text-sage mt-1.5 inline-block w-1 h-1 rounded-full bg-sage flex-none"></span><span>Publicerar <span class="font-mono text-[0.92em] text-ink">BodyfeelFlag</span> när marken inte stämmer med kartan &mdash; inte stopp, en korskontroll.</span></li>
+                <li class="flex gap-3"><span class="text-sage mt-1.5 inline-block w-1 h-1 rounded-full bg-sage flex-none"></span><span>Förmåga: <span class="font-mono text-[0.92em] text-ink">cargo-transport@v1</span></span></li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Relay (bild höger) -->
+          <article class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start" id="module-relay">
+            <div class="lg:col-span-5 lg:order-2">
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-3">Karaktär 02</p>
+              <h3 class="font-sans font-light text-[1.75rem] tracking-tightheading text-ink">Relay</h3>
+              <p class="mt-3 text-ink-soft leading-relaxed">Mesh-ankare. Håller position medan andra rör sig och lyssnar på hur länken kröker sig runt åsen. Maststyrt omnidirektionellt optiskt huvud &mdash; samma fyrdesign som den fristående Lantern bär.</p>
+              <ul class="mt-5 space-y-2.5 text-[15px] text-ink-soft">
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Teleskopisk mast i kolfiberkomposit på skenmonterad basplatta; utfälld höjd ~1.2 m.</span></li>
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Förutsäger länkfel som <span class="font-mono text-[0.92em] text-ink">LinkBendingAlert</span> med uppskattad tid till tystnad.</span></li>
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Förmåga: <span class="font-mono text-[0.92em] text-ink">mesh-relay@v1</span> &middot; <span class="font-mono text-[0.92em] text-ink">link-state-geometry-publication@v1</span></span></li>
+              </ul>
+            </div>
+            <figure class="lg:col-span-7 lg:order-1">
+              <div class="border border-bronze/30 bg-cream">
+                <img src="assets/images/relay-v03-mast-extended.png" alt="Relay-konfiguration: chassiplattform med en mastmodul på topp-skenorna, den teleskopiska kolfibermasten utfälld ovanför chassit." class="w-full h-auto block" loading="lazy" />
+              </div>
+              <figcaption class="mt-3 font-mono text-[11px] text-bronze-dark/80">Relay &middot; v0.3 &middot; chassi + mastmodul (utfälld)</figcaption>
+            </figure>
+          </article>
+
+          <!-- Scout -->
+          <article class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start" id="module-scout">
+            <figure class="lg:col-span-7">
+              <div class="border border-bronze/30 bg-cream">
+                <img src="assets/images/scout-v01-sensor-mast.png" alt="Scout-konfiguration: chassiplattform med sensormastmodul som bär kameror för synligt ljus, termisk bild och en cylindrisk 3D-scanning-LIDAR." class="w-full h-auto block" loading="lazy" />
+              </div>
+              <figcaption class="mt-3 font-mono text-[11px] text-bronze-dark/80">Scout &middot; v0.1 &middot; chassi + sensormastmodul</figcaption>
+            </figure>
+            <div class="lg:col-span-5">
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-3">Karaktär 03</p>
+              <h3 class="font-sans font-light text-[1.75rem] tracking-tightheading text-ink">Scout</h3>
+              <p class="mt-3 text-ink-soft leading-relaxed">Går först. Synligt ljus + termik + 3D-LIDAR. Visuell terrängmatchning för GNSS-nekad positionering &mdash; <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Raptor</a>-klass-noggrannhet mot Vantor 3D-terräng. Synliggör oenighet snarare än döljer den &mdash; perceptionsklustret visar residualer, inte bara konsensus.</p>
+              <ul class="mt-5 space-y-2.5 text-[15px] text-ink-soft">
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Multimodal fusion med per-ström-säkerhet och färskhet, aldrig grönt-som-standard.</span></li>
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Väderadaptiv sensorisering &mdash; lägesskiften sprids till resten av kasten.</span></li>
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Förmåga: <span class="font-mono text-[0.92em] text-ink">multi-modal-perception@v1</span> &middot; <span class="font-mono text-[0.92em] text-ink">visual-terrain-matching@v1</span></span></li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Hand (bild höger) -->
+          <article class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start" id="module-hand">
+            <div class="lg:col-span-5 lg:order-2">
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-3">Karaktär 04</p>
+              <h3 class="font-sans font-light text-[1.75rem] tracking-tightheading text-ink">Hand</h3>
+              <p class="mt-3 text-ink-soft leading-relaxed">Den autonoma Lantern-utsättaren. 4&ndash;5 frihetsgraders fältrobotisk manipulator med greppåterkoppling och närbildsseende. Karaktären vars närvaro minskar Anchor-Setters belastning under insatslivscykeln.</p>
+              <ul class="mt-5 space-y-2.5 text-[15px] text-ink-soft">
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Plockar upp förskjutna Lanterns; placerar nya med synlig inriktningsavvikelse.</span></li>
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Bär vägransförmåga &mdash; <span class="font-mono text-[0.92em] text-ink">PlacementRefused</span> istället för tyst återförsök.</span></li>
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Förmåga: <span class="font-mono text-[0.92em] text-ink">lantern-placement@v1</span> &middot; <span class="font-mono text-[0.92em] text-ink">anchor-handoff-receiver@v1</span></span></li>
+              </ul>
+            </div>
+            <figure class="lg:col-span-7 lg:order-1">
+              <div class="border border-bronze/30 bg-cream">
+                <img src="assets/images/hand-v01-arm-extended.png" alt="Hand-konfiguration: chassiplattform med manipulatorarm-modul monterad på skenorna, armen utsträckt i placeringsposition." class="w-full h-auto block" loading="lazy" />
+              </div>
+              <figcaption class="mt-3 font-mono text-[11px] text-bronze-dark/80">Hand &middot; v0.1 &middot; chassi + manipulatorarmsmodul</figcaption>
+            </figure>
+          </article>
+
+          <!-- Sparrow -->
+          <article class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start" id="module-sparrow">
+            <figure class="lg:col-span-7">
+              <div class="border border-bronze/30 bg-cream">
+                <img src="assets/images/sparrow-chassis-side-v03-drone-in-open-case.png" alt="Sparrow-konfiguration: chassiplattform som bär en motoriserad industriell drönare-i-låda, locket öppet, X650-klass-quadcopter synlig i vaggan." class="w-full h-auto block" loading="lazy" />
+              </div>
+              <figcaption class="mt-3 font-mono text-[11px] text-bronze-dark/80">Sparrow &middot; v0.3 &middot; chassi + aviary-modul (öppen) + X650-klass quadcopter</figcaption>
+            </figure>
+            <div class="lg:col-span-5">
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-3">Karaktär 05</p>
+              <h3 class="font-sans font-light text-[1.75rem] tracking-tightheading text-ink">Sparrow</h3>
+              <p class="mt-3 text-ink-soft leading-relaxed">Två delar av en karaktär. En motoriserad industriell drönare-i-låda monterad på chassiskenorna; en X650-klass-quadcopter som kör ArduPilot sköter flygningen. Flygburen Lantern-verifiering från ovan med <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Raptor</a> Guide på drönarens nativa kamera &mdash; &lt;7&thinsp;m flygposition, &lt;3&thinsp;m extrahering av markkoordinater, inget GPS-beroende.</p>
+              <ul class="mt-5 space-y-2.5 text-[15px] text-ink-soft">
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Fullt autonom start och landning &mdash; inga manuella spärrar någonstans på lådan.</span></li>
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Raptor Sync georegistrerar videoströmmen; Raptor Ace extraherar markkoordinater från flygrutan.</span></li>
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Förmåga: <span class="font-mono text-[0.92em] text-ink">aerial-launch-recovery@v1</span> &middot; <span class="font-mono text-[0.92em] text-ink">vision-based-gnss-denied-positioning@v1</span></span></li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Lantern (bild höger) -->
+          <article class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start" id="module-lantern">
+            <div class="lg:col-span-5 lg:order-2">
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-3">Karaktär 06 &middot; fristående</p>
+              <h3 class="font-sans font-light text-[1.75rem] tracking-tightheading text-ink">Lantern</h3>
+              <p class="mt-3 text-ink-soft leading-relaxed">En liten låda på en låg mast, fastskruvad i en stålplatta nedsatt i grus eller fryst mark. Omnidirektionell optisk fyrring, salviegrön lysdiod genom frostat plast, ingen logotyp. Stillhållaren.</p>
+              <ul class="mt-5 space-y-2.5 text-[15px] text-ink-soft">
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Ring med 6&ndash;8 djupblå svenska glasöppningar &mdash; 360&deg; optisk handskakning med varje chassi som närmar sig.</span></li>
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Publicerar sin egen positioneringssäkerhet och åldrar den ärligt: <span class="font-mono text-[0.92em] text-ink">LanternAgingAlert</span> i god tid före tystnad.</span></li>
+                <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Förmåga: <span class="font-mono text-[0.92em] text-ink">dropped-anchor-positioning@v1</span> &middot; <span class="font-mono text-[0.92em] text-ink">optical-radio-relay@v1</span></span></li>
+              </ul>
+              <p class="mt-5 text-[14px] text-bronze-dark leading-relaxed">Relays masttoppshuvud är samma fyrdesign på upphöjning &mdash; en optisk enhet, två konfigurationer, leverantörsutbytbar på fyrhuvud-nivå.</p>
+            </div>
+            <figure class="lg:col-span-7 lg:order-1">
+              <div class="border border-bronze/30 bg-cream">
+                <img src="assets/images/lantern-v02-omnidirectional-beacon.png" alt="Fristående Lantern-ankare: termosstor cylindrisk kropp på en låg mast, fastskruvad på en stålfotad basplatta, omnidirektionell fyrring på toppen med 6 till 8 djupblå svenska glasöppningar." class="w-full h-auto block" loading="lazy" />
+              </div>
+              <figcaption class="mt-3 font-mono text-[11px] text-bronze-dark/80">Lantern &middot; v0.2 &middot; fristående släppt ankare</figcaption>
+            </figure>
+          </article>
+
+        </div>
+
+        <!-- Anchor-Setter callout -->
+        <aside class="mt-20 lg:mt-24 border border-bronze/25 bg-cream/70 p-7 lg:p-9">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-copper mb-3">Karaktär 07 &middot; mänsklig roll</p>
+          <h3 class="font-sans font-light text-[1.5rem] tracking-tightheading text-ink">Anchor-Setter &mdash; rollen som minskar över tid.</h3>
+          <p class="mt-3 text-ink-soft leading-relaxed max-w-3xl">
+            Den mänskliga fältoperatören som släpper och bekräftar Lanterns. De
+            tidiga Fas&nbsp;3-demonstrationerna visar mänsklig ankring; de senare visar
+            <span class="font-mono text-[0.95em] text-ink">Hand</span> som tar över uppgiften &mdash;
+            en Lantern i taget, med spårbarhet bevarad genom
+            <span class="font-mono text-[0.95em] text-ink">HandoffComplete</span>.
+            Människan-i-loopen är en operativ primitiv av första klass, inte en
+            eftertanke; rollen minskas, aldrig elimineras.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Byggt på Vantors plattform för rumslig intelligens -->
+    <section id="platform" class="border-t border-bronze/20 py-20 lg:py-28">
+      <div class="max-w-6xl mx-auto px-6 lg:px-10">
+        <div class="max-w-3xl">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-copper mb-5">Från rymden till marken</p>
+          <h2 class="font-sans font-light text-[2rem] lg:text-[2.25rem] leading-tight tracking-tightheading text-ink">
+            Byggt på Vantors Spatial Intelligence Platform.
+          </h2>
+          <p class="mt-5 text-ink-soft leading-relaxed">
+            Vantor sätter redan varje pixel på sin plats från rymden till luften.
+            Laser-mesh utökar samma koordinatsystem till marken &mdash; chassi,
+            optiskt mesh, ankarposter och operatörsgränssnitt alla förankrade i
+            samma Vivid Terrain-grund som Vantors satellit-, flyg- och
+            Raptor-utrustade drönartillgångar. En rumslig sanningskälla över hela
+            stacken.
+          </p>
+        </div>
+
+        <div class="mt-14 lg:mt-16 grid lg:grid-cols-3 gap-6 lg:gap-7">
+
+          <!-- Forge -->
+          <article class="border border-bronze/30 bg-cream p-7 lg:p-8 flex flex-col">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Plattform</p>
+            <h3 class="font-sans font-light text-[1.5rem] tracking-tightheading text-ink">Forge<sup class="text-[0.55em] text-bronze-dark/70 align-super">&trade;</sup></h3>
+            <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.16em] text-copper">Sensorsfusion &middot; produktion av rumslig intelligens</p>
+            <p class="mt-4 text-[15px] text-ink-soft leading-relaxed">Realtidssamregistrering av varje laser-mesh-sensorström &mdash; chassi-IMU, Scouts LIDAR + termik, Sparrows flygrutor, Lanterns ankarbekräftelser &mdash; mot Vantors Vivid Terrain. Chassit, drönaren och satelliten ser samma marksanning på samma koordinat.</p>
+            <ul class="mt-5 space-y-2 text-[14px] text-ink-soft">
+              <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Edge-distribuerbar på chassits beräkningspaket.</span></li>
+              <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>2D- och 3D-produktion från samregistrerade strömmar.</span></li>
+              <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Stödjer driftsättning i klassificerad miljö.</span></li>
+            </ul>
+            <p class="mt-auto pt-5 font-mono text-[11px] text-bronze-dark/80">
+              <a href="https://vantor.com/product/platform/forge/" class="hover:text-copper">vantor.com/product/platform/forge &rarr;</a>
+            </p>
+          </article>
+
+          <!-- Raptor -->
+          <article class="border border-bronze/30 bg-cream p-7 lg:p-8 flex flex-col">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Mission Solutions</p>
+            <h3 class="font-sans font-light text-[1.5rem] tracking-tightheading text-ink">Raptor<sup class="text-[0.55em] text-bronze-dark/70 align-super">&trade;</sup></h3>
+            <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.16em] text-copper">GPS-nekad visuellt baserad positionering</p>
+            <p class="mt-4 text-[15px] text-ink-soft leading-relaxed">Den visuellt baserade positioneringsgrunden som laser-mesh-arkitekturkanon namnger som &ldquo;Raptor-klass&rdquo;. Nu inkopplad vid namn: Sparrow kör Raptor Guide på sin nativa kamera; flygrutor passerar genom Raptor Sync; markkoordinater kommer ut ur Raptor Ace. Scouts perceptionscluster använder samma terränggrund.</p>
+            <ul class="mt-5 space-y-2 text-[14px] text-ink-soft">
+              <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>&lt;7&thinsp;m absolut flygnoggrannhet, &lt;3&thinsp;m noggrannhet i markkoordinater.</span></li>
+              <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Plattformsoberoende; körs på vanlig drönarberäkning.</span></li>
+              <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Fungerar i mörker och på låg höjd.</span></li>
+            </ul>
+            <p class="mt-auto pt-5 font-mono text-[11px] text-bronze-dark/80">
+              <a href="https://vantor.com/product/mission-solutions/raptor/" class="hover:text-copper">vantor.com/product/mission-solutions/raptor &rarr;</a>
+            </p>
+          </article>
+
+          <!-- Sentry -->
+          <article class="border border-bronze/30 bg-cream p-7 lg:p-8 flex flex-col">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Mission Solutions</p>
+            <h3 class="font-sans font-light text-[1.5rem] tracking-tightheading text-ink">Sentry<sup class="text-[0.55em] text-bronze-dark/70 align-super">&trade;</sup></h3>
+            <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.16em] text-copper">Global persistent övervakning</p>
+            <p class="mt-4 text-[15px] text-ink-soft leading-relaxed">Vantor Sentry kör det globala ISR-skiktet &mdash; Site Sentry över hundratals platser, Maritime Sentry över tusentals km² hav. Laser-mesh Fas 3 Sentry-påsats (perimeterövervakning på en chassiplattform) är den lokala marknivån i samma övervakningsloop. Samma mönster i livets gång; två observationsskalor.</p>
+            <ul class="mt-5 space-y-2 text-[14px] text-ink-soft">
+              <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Global persistent övervakning över hundratals platser.</span></li>
+              <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Automatiserad multi-konstellation-uppdragsplanering och tipping.</span></li>
+              <li class="flex gap-3"><span class="inline-block w-1 h-1 mt-1.5 rounded-full bg-sage flex-none"></span><span>Vantor 20+ års 30&thinsp;cm-klass-bildarkiv som baslinje.</span></li>
+            </ul>
+            <p class="mt-auto pt-5 font-mono text-[11px] text-bronze-dark/80">
+              <a href="https://vantor.com/product/mission-solutions/sentry/" class="hover:text-copper">vantor.com/product/mission-solutions/sentry &rarr;</a>
+            </p>
+          </article>
+
+        </div>
+
+        <!-- Loop-diagram — rymd till mark -->
+        <figure class="mt-14 lg:mt-16 border border-bronze/30 bg-snow/60 p-7 lg:p-9">
+          <figcaption class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze-dark mb-6">Rymd-till-mark-loopen &middot; ett koordinatsystem, fyra höjder</figcaption>
+          <div class="grid sm:grid-cols-4 gap-3 lg:gap-4 items-stretch text-center">
+            <div class="border border-swedish-blue/30 bg-cream p-4 flex flex-col">
+              <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-swedish-blue mb-2">Rymd</p>
+              <p class="font-sans text-[14px] text-ink leading-snug">Sentry &middot; WorldView-konstellation</p>
+              <p class="mt-2 font-mono text-[10px] text-bronze-dark/80">Global ISR, 30&thinsp;cm-arkiv</p>
+            </div>
+            <div class="border border-copper/30 bg-cream p-4 flex flex-col">
+              <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-copper mb-2">Luft</p>
+              <p class="font-sans text-[14px] text-ink leading-snug">Sparrow-drönare &middot; Raptor Guide</p>
+              <p class="mt-2 font-mono text-[10px] text-bronze-dark/80">Visuellt baserad GNSS-nekad positionering</p>
+            </div>
+            <div class="border border-sage/40 bg-cream p-4 flex flex-col">
+              <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-sage-dark mb-2">Mark</p>
+              <p class="font-sans text-[14px] text-ink leading-snug">Chassi + Scout + Hand + Mule + Relay</p>
+              <p class="mt-2 font-mono text-[10px] text-bronze-dark/80">Modulära UGV:er med öppen arkitektur</p>
+            </div>
+            <div class="border border-bronze/40 bg-cream p-4 flex flex-col">
+              <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-bronze-dark mb-2">Ankare</p>
+              <p class="font-sans text-[14px] text-ink leading-snug">Lantern &middot; omnidirektionella optiska ankare</p>
+              <p class="mt-2 font-mono text-[10px] text-bronze-dark/80">Positioneringsreferens med ärlig åldring</p>
+            </div>
+          </div>
+          <p class="mt-6 text-[13px] text-bronze-dark text-center leading-relaxed">
+            Forge sammansmälter alla fyra höjder mot Vivid Terrain. Varje chassi-pose, varje flygruta, varje släppt ankare och varje satellitrevisit landar på samma koordinat.
+          </p>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Arkitektur / Öppet gränssnitt -->
+    <section id="architecture" class="py-20 lg:py-28">
+      <div class="max-w-6xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-5">Arkitektur</p>
+          <h2 class="font-sans font-light text-[2rem] lg:text-[2.25rem] leading-tight tracking-tightheading text-ink">
+            Rollen är utbytesenheten. Inte roboten. Rollen.
+          </h2>
+          <p class="mt-5 text-ink-soft leading-relaxed">
+            Varje karaktär är ett <span class="font-mono text-[0.95em] text-ink">rollkontrakt</span>:
+            vad den uppfattar, vilka intentioner den accepterar, vad den publicerar,
+            vad den sänder ut när något ändras. Plus en synlig livscykel och en
+            annonserad förmågesträng &mdash;
+            <span class="font-mono text-[0.95em] text-ink">kebab-case@v1</span>
+            &mdash; det öppna gränssnittets körtidssida.
+          </p>
+          <p class="mt-5 text-ink-soft leading-relaxed">
+            En ny leverantör som implementerar en Mule skriver mot de fyra ytorna,
+            livscykeln och förmågan. Chassit <em class="not-italic">blir</em>
+            en Mule genom att bära kontraktet, inte ett varumärke.
+          </p>
+
+          <div class="mt-7 space-y-3 font-mono text-[12px] text-ink-soft">
+            <p class="flex gap-3"><span class="text-copper">a.</span><span>Konsortiepublicerade modulkontrakt körs på referenschassit.</span></p>
+            <p class="flex gap-3"><span class="text-copper">b.</span><span>Samma modulkontrakt körs på tredjeparts kommersiella UGV-chassi &mdash; Husky, Bunker Pro, Spot-klass.</span></p>
+            <p class="flex gap-3"><span class="text-copper">c.</span><span>Andra-källas konsortie-klass-chassi som kör samma moduler i en senare upphandlingscykel.</span></p>
+          </div>
+          <p class="mt-5 text-[13px] text-bronze-dark leading-relaxed">Modul-först enligt DR-ingest Q-FINAL: bärbar först, plattformsmonterad sedan, skräddarsydd mobilitet bara om det visat sig nödvändigt.</p>
+        </div>
+
+        <!-- DDA-skiktdiagram (endast CSS) -->
+        <div class="lg:col-span-7">
+          <figure class="border border-bronze/30 bg-snow/60 p-6 lg:p-8">
+            <figcaption class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze-dark mb-5">Fyrskiktad DDA &middot; nästlad, inte staplad</figcaption>
+            <div class="space-y-3">
+              <div class="border border-copper/40 bg-cream px-5 py-4">
+                <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-copper mb-1.5">Skikt 4 &middot; Per-påsats-specialisering</p>
+                <p class="text-[14px] text-ink leading-relaxed">Mule, Relay, Scout, Hand, Sparrow, Lantern &mdash; demokasten lever här, en rad per karaktär.</p>
+              </div>
+              <div class="border border-bronze/50 bg-cream px-5 py-4">
+                <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-bronze-dark mb-1.5">Skikt 3 &middot; Familjespecifika</p>
+                <p class="text-[14px] text-ink-soft leading-relaxed">Chassiplattform / fristående släppt ankare / flygburen subenhet.</p>
+              </div>
+              <div class="border border-bronze/40 bg-cream px-5 py-4">
+                <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-bronze-dark mb-1.5">Skikt 2 &middot; Återanvändbara specialiserade</p>
+                <p class="text-[14px] text-ink-soft leading-relaxed">Positionering &middot; perception &middot; samordning. Anchor-decay, link-state-as-mission-geometry, disagreement-surface bor här.</p>
+              </div>
+              <div class="border border-bronze/30 bg-cream px-5 py-4">
+                <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-bronze-dark mb-1.5">Skikt 1 &middot; Basdomäner</p>
+                <p class="text-[14px] text-ink-soft leading-relaxed">Tillståndsestimering &middot; mesh-kommunikation &middot; samordningsgränssnitt &middot; ström och driftscykel. Varje nod bär dessa &mdash; inklusive Lantern.</p>
+              </div>
+            </div>
+          </figure>
+
+          <figure class="mt-6 border border-bronze/30 bg-cream p-6 lg:p-7">
+            <figcaption class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze-dark mb-4">Universellt skendockningsläge &middot; ett gränssnitt, varje modul</figcaption>
+            <div class="grid grid-cols-5 gap-2 items-end font-mono text-[10px] uppercase tracking-[0.14em] text-bronze-dark">
+              <div class="space-y-2">
+                <div class="h-12 border border-bronze/40 bg-snow flex items-center justify-center text-ink">Last</div>
+                <p class="text-center">Mule</p>
+              </div>
+              <div class="space-y-2">
+                <div class="h-16 border border-bronze/40 bg-snow flex items-center justify-center text-ink">Mast</div>
+                <p class="text-center">Relay</p>
+              </div>
+              <div class="space-y-2">
+                <div class="h-14 border border-bronze/40 bg-snow flex items-center justify-center text-ink">Sensor</div>
+                <p class="text-center">Scout</p>
+              </div>
+              <div class="space-y-2">
+                <div class="h-14 border border-bronze/40 bg-snow flex items-center justify-center text-ink">Arm</div>
+                <p class="text-center">Hand</p>
+              </div>
+              <div class="space-y-2">
+                <div class="h-12 border border-bronze/40 bg-snow flex items-center justify-center text-ink">Aviary</div>
+                <p class="text-center">Sparrow</p>
+              </div>
+            </div>
+            <div class="mt-2 h-2 bg-bronze/60"></div>
+            <div class="h-3 bg-bronze/30"></div>
+            <p class="mt-3 text-[12px] text-bronze-dark text-center">Bultmönster + ström + dataport vid varje monteringsposition. Moduler fästs mekaniskt, startas upp och annonserar förmåga via auto-discovery.</p>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Innovationer -->
+    <section id="innovations" class="border-t border-bronze/20 bg-snow/40 py-20 lg:py-28">
+      <div class="max-w-6xl mx-auto px-6 lg:px-10">
+        <div class="max-w-3xl">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-5">Innovationer</p>
+          <h2 class="font-sans font-light text-[2rem] lg:text-[2.25rem] leading-tight tracking-tightheading text-ink">
+            Sex laser-mesh-specifika primitiver.
+          </h2>
+          <p class="mt-5 text-ink-soft leading-relaxed">Var och en är namngiven för att den svarar på ett specifikt operatörsfelläge &mdash; inte för att den låter nyskapande.</p>
+        </div>
+
+        <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
+          <div>
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-copper mb-2">01</p>
+            <h3 class="font-sans text-[1.15rem] text-ink font-medium">Anchor-decay</h3>
+            <p class="mt-2 text-[15px] text-ink-soft leading-relaxed">Positioneringssäkerhet åldras över tid och avstånd från ankarreferens. Grönt är lysdiodens sanning, inte systemets.</p>
+          </div>
+          <div>
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-copper mb-2">02</p>
+            <h3 class="font-sans text-[1.15rem] text-ink font-medium">Disagreement-surface</h3>
+            <p class="mt-2 text-[15px] text-ink-soft leading-relaxed">Gränssnitt med åldersfärg som visar kors-sensor- och kors-nod-konsensustillstånd. Vägrar att tyst sammanjämka.</p>
+          </div>
+          <div>
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-copper mb-2">03</p>
+            <h3 class="font-sans text-[1.15rem] text-ink font-medium">Link-state-as-mission-geometry</h3>
+            <p class="mt-2 text-[15px] text-ink-soft leading-relaxed">Mesh-topologi som geometrisk begränsning. <em class="not-italic">Krökning, åtta minuter från tystnad</em> &mdash; prediktionsfönster, inte felrapport.</p>
+          </div>
+          <div>
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-copper mb-2">04</p>
+            <h3 class="font-sans text-[1.15rem] text-ink font-medium">Operator-pause-as-signal</h3>
+            <p class="mt-2 text-[15px] text-ink-soft leading-relaxed">Operatörstystnad är i sig en typad mesh-input &mdash; inte <em class="not-italic">systemet stannade</em>, utan <em class="not-italic">människan bad om ett ögonblick; respektera det.</em></p>
+          </div>
+          <div>
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-copper mb-2">05</p>
+            <h3 class="font-sans text-[1.15rem] text-ink font-medium">Approve-with-review-flag</h3>
+            <p class="mt-2 text-[15px] text-ink-soft leading-relaxed">Bekräfta nu, granska efter att arbetet landat. Avgränsad operatörsåtgärd som inte blockerar framåtrörelsen.</p>
+          </div>
+          <div>
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-copper mb-2">06</p>
+            <h3 class="font-sans text-[1.15rem] text-ink font-medium">Anchor-Setter &rarr; Hand-övergång</h3>
+            <p class="mt-2 text-[15px] text-ink-soft leading-relaxed">Människa-i-loopen mognar till autonom manipulation. Samma förmåga annonseras; annan implementerare; arkitekturen oförändrad.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Framtida moduler (Fas 3) -->
+    <section id="future" class="py-20 lg:py-24">
+      <div class="max-w-6xl mx-auto px-6 lg:px-10">
+        <div class="max-w-3xl">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-5">Fas 3 &middot; namngivna, ännu inte konstruerade</p>
+          <h2 class="font-sans font-light text-[1.85rem] lg:text-[2rem] leading-tight tracking-tightheading text-ink">
+            Fyra framtida konfigurationer på samma chassi.
+          </h2>
+          <p class="mt-4 text-ink-soft leading-relaxed">Listade endast med namn och intention. Var och en får sitt eget rollkontrakt när den når demoomfång.</p>
+        </div>
+        <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="border border-bronze/30 bg-cream/70 p-5">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Hawk</p>
+            <p class="text-[15px] text-ink-soft leading-relaxed">Aviary + längre räckvidd, quad-plane eller fast vinge. Samma chassi-sidiga beräkningsbackend som Sparrow; multi-kilometer-spaningsförmåga.</p>
+          </div>
+          <div class="border border-bronze/30 bg-cream/70 p-5">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Hearth</p>
+            <p class="text-[15px] text-ink-soft leading-relaxed">Värmd skyddspunkt / laddning / operatörskomfort. Subarktiskt kritisk &mdash; där Anchor-Setter värmer händerna och Lanterns batteribyts.</p>
+          </div>
+          <div class="border border-bronze/30 bg-cream/70 p-5">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Sentry &middot; <span class="text-copper normal-case tracking-normal">marknivå</span></p>
+            <p class="text-[15px] text-ink-soft leading-relaxed">Perimeterövervakningsmodul på chassiplattformen. Den lokala marknivån av <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Vantor Sentry</a>:s globala ISR &mdash; samma loop för mönster i livets gång, två observationshöjder.</p>
+          </div>
+          <div class="border border-bronze/30 bg-cream/70 p-5">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Bellows</p>
+            <p class="text-[15px] text-ink-soft leading-relaxed">Mobil ströminfrastruktur &mdash; hot-swap-batterier till uttömda noder. Ström är bara ytterligare en modul.</p>
+          </div>
+          <div class="border border-bronze/30 bg-cream/70 p-5 sm:col-span-2 lg:col-span-4">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Flock &middot; <span class="text-copper normal-case tracking-normal">multi-drönar-Forge-integration</span></p>
+            <p class="text-[15px] text-ink-soft leading-relaxed">En Aviary med flera vaggor som sjösätter många små, billiga, individuellt förbrukningsbara drönare in i GPS-nekad terräng. Varje drönare kör <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Raptor</a> Guide på vanlig beräkning; den chassi-monterade <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Forge</a>-paketet sammansmälter det som återvänder mot Vivid Terrain. Billiga flygkroppar; dyrbar intelligens. Förlusttolerant som design &mdash; uppdragsplanering budgeterar för att en del inte återvänder. Ligger utanför FMV:s demokast för 2026-06-03 som strategiskt expansionskoncept.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kontext / Svenskbyggd / CTA -->
+    <section id="context" class="border-t border-bronze/20 bg-cream py-20 lg:py-28">
+      <div class="max-w-6xl mx-auto px-6 lg:px-10 grid lg:grid-cols-12 gap-12 lg:gap-16">
+        <div class="lg:col-span-7">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-5">Kontext</p>
+          <h2 class="font-sans font-light text-[2rem] lg:text-[2.25rem] leading-tight tracking-tightheading text-ink">
+            Svenskbyggd marknivå för Vantors plattform för rumslig intelligens.
+          </h2>
+          <p class="mt-6 text-ink-soft leading-relaxed">
+            Laser-mesh utökar Vantors rymd-till-luft-förmåga till marken.
+            Chassiplattformen är konstruerad och byggd i Sverige med medveten
+            alternativ försörjning på det chassi-utbytbara skiktet &mdash;
+            konsortiets referenschassi, tredjeparts kommersiella värdar
+            (Husky, Bunker Pro, Spot-klass), eller ett andra-källas
+            referenschassi i en senare upphandlingscykel. Modulkontrakt är
+            det bestående; leverantörsidentitet vid ett enskilt skikt är det inte.
+          </p>
+          <p class="mt-5 text-ink-soft leading-relaxed">
+            Det visuella registret är medvetet. Husqvarna-silhuett från
+            autonoma gräsklippare. Atlas Copco-service-hårdvara. Pelican-klass
+            transportväskor. Trimble-mätinstrument. Volvo CE:s senaftonliga
+            katalogljus. En fälttekniker kan lyfta den, byta batteri på trettio
+            sekunder och köra iväg. Vokabulären är genomgående
+            civilingenjörsregister &mdash; avstämt för FMV-upphandlingsutvärderaren
+            som läser svarsbilagan först.
+          </p>
+
+          <div class="mt-9 grid sm:grid-cols-3 gap-x-6 gap-y-4 font-mono text-[12px] text-ink-soft border-t border-bronze/25 pt-7">
+            <div>
+              <p class="text-bronze-dark uppercase tracking-[0.16em] text-[11px] mb-1">Upphandling</p>
+              <p>FMV CMIP PCP</p>
+              <p>Sm&aring; obemannade markfarkoster</p>
+            </div>
+            <div>
+              <p class="text-bronze-dark uppercase tracking-[0.16em] text-[11px] mb-1">Tidsplan</p>
+              <p>Svarsbilaga 2026-06-03</p>
+              <p>Fas 1: 2026-08-25 &mdash; 28</p>
+            </div>
+            <div>
+              <p class="text-bronze-dark uppercase tracking-[0.16em] text-[11px] mb-1">Insatsmiljö</p>
+              <p>Subarktisk boreal terräng</p>
+              <p>GNSS-nekad drift</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="lg:col-span-5">
+          <div class="border border-bronze/40 bg-snow/60 p-7 lg:p-8">
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-copper mb-4">Kontakt</p>
+            <h3 class="font-sans font-light text-[1.4rem] tracking-tightheading text-ink">För FMV-utvärderare och möjliga med-sökande.</h3>
+            <p class="mt-3 text-ink-soft leading-relaxed text-[15px]">
+              Hela arkitekturkorpusen &mdash; rollkontrakt, mesh-kommunikations-QoS,
+              tillstånd för degraderat läge, öppenhetspitchen &mdash; bor i mappen
+              <span class="font-mono text-[0.95em] text-ink">architecture-prototype-triage</span>
+              och är tillgänglig på begäran.
+            </p>
+            <!-- OPERATOR TUNE: ersätt nedanstående href med faktisk kontaktkanal innan delning -->
+            <a href="mailto:contact@example.invalid" class="mt-5 inline-flex items-center gap-2 px-5 py-3 bg-ink text-cream font-mono text-[12px] uppercase tracking-[0.16em] hover:bg-hardware transition">Begär arkitekturkorpusen</a>
+            <p class="mt-4 font-mono text-[11px] text-bronze-dark leading-relaxed">Eller nå konsortiet via FMV-upphandlingskanalen under referensen <span class="text-ink">26FMVU1595</span>.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer — liten, logotyp-fri (speglar Lantern v0.2-estetiken) -->
+  <footer class="border-t border-bronze/30 bg-cream">
+    <div class="max-w-6xl mx-auto px-6 lg:px-10 py-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 font-mono text-[11px] uppercase tracking-[0.16em] text-bronze-dark">
+      <div>
+        <p class="text-ink font-sans font-medium text-[13px] tracking-[0.18em]">VANTOR</p>
+        <p class="mt-1 normal-case tracking-normal text-[12px]"><a href="https://vantor.com/" class="hover:text-copper">vantor.com</a></p>
+      </div>
+      <div>
+        <p>laser-mesh &middot; markproduktlinje</p>
+        <p class="mt-1">Kastlås 2026-05-29 &middot; svarsbilaga 2026-06-03</p>
+      </div>
+      <div>
+        <p>Oklassad &middot; civilingenjörsregister</p>
+        <p class="mt-1">Forge, Raptor, Sentry &middot; varumärken hos Vantor</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

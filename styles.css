@@ -1,0 +1,126 @@
+/*
+ * laser-mesh website — supplementary styles
+ *
+ * Purpose: small details that don't sit naturally in Tailwind utility classes.
+ * The bulk of styling lives in inline Tailwind classes in index.html so the
+ * operator can iterate without a build step. This file is intentionally thin.
+ *
+ * Wheel-check trace (2026-05-28):
+ *   parent design system  : Balans v1.0 light-mode Swedish-minimalist palette
+ *                           (compression/1-sources/balans/brand/, 2025-07-05)
+ *   laser-mesh specialization: laser-mesh-nordic-product-photo.mdx v0.1
+ *   adjacent (out-of-scope): themes/brands/weavermesh/tokens.json — dark-mode
+ *                           dev-tool surface only; BirdTurret tactical dark
+ *                           variant of Balans is also out-of-scope (defense-
+ *                           marketing register banned by PROMPT.md).
+ *   See README.md §Wheel-check trace for the full verdict + lineage.
+ */
+
+/* ------------------------------------------------------------------
+ * Document baseline
+ * ------------------------------------------------------------------ */
+
+html {
+  /* sticky header is ~64px tall; anchor jumps should land below it */
+  scroll-padding-top: 5rem;
+  scroll-behavior: smooth;
+}
+
+body {
+  /* Plex Sans renders cleaner with these features on. Subarctic-cold
+   * field-instrument register benefits from steady, even letterforms. */
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Numbers in the mono captions read cleaner with tabular figures so spec
+ * dimensions like "75–85 cm" stay aligned across rows. */
+.font-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------
+ * Imagery — restrained product-photo treatment
+ * ------------------------------------------------------------------ */
+
+/* Render images with a hairline matte border at any size. No drop shadow
+ * — the Nordic product-photo style explicitly bans drop shadows that
+ * read as 3D depth (per laser-mesh-nordic-product-photo.mdx). */
+figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: #E8EAEB; /* snow — fallback while image loads */
+}
+
+/* Subtle interaction cue on figure containers — barely perceptible. */
+figure > div {
+  transition: border-color 200ms ease;
+}
+
+figure:hover > div {
+  border-color: rgba(184, 115, 51, 0.45); /* copper at 45% — sparing hover */
+}
+
+/* ------------------------------------------------------------------
+ * Link discipline — copper for sparing emphasis
+ * ------------------------------------------------------------------ */
+
+/* In-prose links inside <main> get copper underline on hover.
+ * Top-nav links are already styled inline. */
+main p a,
+main li a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(156, 136, 112, 0.6); /* bronze */
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 200ms ease, color 200ms ease;
+}
+
+main p a:hover,
+main li a:hover {
+  color: #B87333; /* copper */
+  text-decoration-color: #B87333;
+}
+
+/* ------------------------------------------------------------------
+ * Print register — sober Nordic catalog page
+ * ------------------------------------------------------------------ */
+
+@media print {
+  /* If the operator prints the site for a procurement handout. */
+  header,
+  footer .uppercase {
+    background: #F5F1EA !important;
+    color: #2A2724 !important;
+  }
+  a {
+    color: #2A2724 !important;
+    text-decoration: none !important;
+  }
+  img {
+    page-break-inside: avoid;
+  }
+  section {
+    page-break-inside: avoid;
+  }
+}
+
+/* ------------------------------------------------------------------
+ * Reduced motion respect
+ * ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
