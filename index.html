@@ -111,6 +111,7 @@
         <a href="#modules" class="hover:text-copper">Moduler</a>
         <a href="#platform" class="hover:text-copper">Plattform</a>
         <a href="#architecture" class="hover:text-copper">Arkitektur</a>
+        <a href="#evolution" class="hover:text-copper">Vidareutveckling</a>
         <a href="#context" class="hover:text-copper">Kontext</a>
       </nav>
     </div>
@@ -338,8 +339,9 @@
           <p class="mt-5 text-ink-soft leading-relaxed">
             Varje markburen karaktär är samma chassi med en annan modul
             dockad på de universella toppmontageskenorna. Lantern har sin egen
-            formfaktor: ett släppt ankare som fungerar som positioneringsreferens
-            för hela mesh-nätet.
+            formfaktor: ett släppt mesh-relä som primärt sköter bidirektionell
+            optisk kommunikation mellan noder, och som dessutom fungerar som
+            positioneringsreferens för hela mesh-nätet.
           </p>
         </div>
 
@@ -749,6 +751,161 @@
             <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Flock &middot; <span class="text-copper normal-case tracking-normal">multi-drönar-Forge-integration</span></p>
             <p class="text-[15px] text-ink-soft leading-relaxed">En Aviary med flera vaggor som sjösätter många små, billiga, individuellt förbrukningsbara drönare in i GPS-nekad terräng. Varje drönare kör <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Raptor</a> Guide på vanlig beräkning; det chassi-monterade <a href="#platform" class="font-mono text-[0.95em] text-ink hover:text-copper">Forge</a>-paketet sammansmälter det som återvänder mot Vivid Terrain. Billiga flygkroppar, dyrbar intelligens. Förlusttolerant som design; uppdragsplaneringen budgeterar för att en del inte återvänder. Ligger utanför FMV:s demokast för 2026-06-03 som strategiskt expansionskoncept.</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vidareutveckling — fyra kapaciteter Dyno arbetar mot post-Fas-1 -->
+    <section id="evolution" class="border-t border-bronze/20 bg-snow/40 py-20 lg:py-28">
+      <div class="max-w-6xl mx-auto px-6 lg:px-10">
+        <div class="max-w-3xl mb-12">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-bronze mb-5">Vidareutveckling &middot; bortom Fas 1-demonstrationen</p>
+          <h2 class="font-sans font-light text-[2rem] lg:text-[2.25rem] leading-tight tracking-tightheading text-ink">
+            Fyra utvecklingsspår som arkitekturen är byggd f&ouml;r att v&auml;xa in i.
+          </h2>
+          <p class="mt-5 text-ink-soft leading-relaxed">
+            Modulgr&auml;nssnittet och rollkontrakten &auml;r konstruerade s&aring;
+            att dessa fyra kapaciteter kan utvecklas och f&auml;ltvalideras
+            under Fas 3 utan att kontrakten p&aring; den befintliga arkitekturen
+            beh&ouml;ver brytas. Inkluderas h&auml;r f&ouml;r &auml;rlighet om var
+            arkitekturen pekar &mdash; inte som &aring;taganden i Fas 1-leveransen.
+            TRL-niv&aring;er anges per kapacitet; partneridentifiering kan
+            aktualiseras efter inl&auml;mning beroende p&aring; utfall.
+          </p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-6 lg:gap-7">
+
+          <!-- Spool -->
+          <article class="border border-bronze/30 bg-cream p-7 lg:p-8 flex flex-col">
+            <figure class="-mx-7 lg:-mx-8 -mt-7 lg:-mt-8 mb-6">
+              <div class="border-b border-bronze/30 bg-snow/50">
+                <img src="assets/images/spool-v01-mule-fiber-deployment.png" alt="Spool-konfiguration: Mule-chassi med horisontellt monterad fiber-spool-drum p&aring; lastfl&auml;cket vid Norrland-vinter-skogsbryn, kabel betalas ut till en st&aring;l-ankar-spike i sn&ouml;n; sage-gr&ouml;na statusindikatorer, sidohandtag och s&auml;kerhets-orange batteri-sn&auml;ppen synliga." class="w-full h-auto block" loading="lazy" />
+              </div>
+              <figcaption class="px-7 lg:px-8 pt-3 font-mono text-[11px] text-bronze-dark/80">Spool &middot; v0.1 &middot; default pay-out-konfiguration</figcaption>
+            </figure>
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Spool</p>
+            <h3 class="font-sans font-light text-[1.5rem] tracking-tightheading text-ink">Tempor&auml;r fiber + tap-in</h3>
+            <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.16em] text-copper">Kommunikations&shy;skiktet &middot; aktivt infrastrukturst&ouml;d</p>
+            <p class="mt-4 text-[15px] text-ink-soft leading-relaxed">
+              En Mule-monterad modul som l&auml;gger ut f&ouml;rterminerad
+              taktisk fiberkabel mellan k&auml;nda &auml;ndpunkter. Modulen
+              har en integrerad spike-drivare som f&ouml;rankrar
+              kabel&auml;nden vid utg&aring;ngspunkten; Mulen k&ouml;r sedan
+              fram&aring;t l&auml;ngs deployeringslinjen och vecklar ut
+              kabeln med kontrollerad sp&auml;nning. F&ouml;r anslutning mot
+              befintlig fiber (Skellefte&aring; Kraft-st&auml;llverk,
+              telecom-noder, undervattenskabel&shy;landningar) anv&auml;nds
+              en Hand-effektor i ett separat steg vid f&ouml;rberedda
+              tap-in-uttag. Optisk mesh fortsatt prim&auml;r; fiber
+              adderar bandbreddstier och bypass-kapacitet n&auml;r enskilda
+              fiberspan tagits ur drift. Civil- och milit&auml;rrelevant.
+            </p>
+            <p class="mt-4 font-mono text-[11px] text-bronze-dark uppercase tracking-[0.14em]">
+              TRL 4&ndash;5 nu &middot; 6&ndash;7 m&aring;l 2028 &middot; Fas 3-prototypkandidat
+            </p>
+            <p class="mt-2 font-mono text-[11px] text-bronze-dark/80">
+              Icke-vapeniserat. Ren infrastruktur. Splice mot godtycklig
+              backbone <span class="text-ink/80">ej</span> inom kapacitetens
+              ram &mdash; endast plug-and-play vid f&ouml;rberedda uttag.
+            </p>
+          </article>
+
+          <!-- Lantern fully-speced -->
+          <article class="border border-bronze/30 bg-cream p-7 lg:p-8 flex flex-col">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Lantern &middot; fullsk&aring;lig variant</p>
+            <h3 class="font-sans font-light text-[1.5rem] tracking-tightheading text-ink">Positionering + akustik + seismik + 360&deg; kamera + RTK + passiv CUAS</h3>
+            <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.16em] text-copper">Sensorisk konsolidering vid noden</p>
+            <p class="mt-4 text-[15px] text-ink-soft leading-relaxed">
+              En kanonisk fullsk&aring;lig Lantern som samlar sex
+              kapaciteter i en enda nod: positioneringsfyr (befintligt),
+              360-graders passiv perception via kameraring, akustisk och
+              seismisk baslinjeovervakning, RTK GPS-korrektionsutsl&auml;pp,
+              och passiv CUAS-detektion (RF + visuellt + akustiskt). Alla
+              m&auml;tningar vid samma punkt &mdash; ingen temporal eller
+              spatial felmarginal vid fusion. Detektion-bara; engagemang
+              ligger kvar hos F&ouml;rsvarsmakten och Hemv&auml;rnets separata
+              system. Spektrum av varianter t&auml;nks: en billig
+              positionerings-Lantern (befintlig v0.3) och denna fullsk&aring;liga
+              som &auml;ndpunkterna; utvecklingsroadmappen efter Fas 1 best&auml;mmer
+              vilka mellanniv&aring;er som ska byggas.
+            </p>
+            <p class="mt-4 font-mono text-[11px] text-bronze-dark uppercase tracking-[0.14em]">
+              TRL 5&ndash;6 nu (integrerat) &middot; 7&ndash;8 m&aring;l 2028 &middot; Fas 3-prototypkandidat
+            </p>
+            <p class="mt-2 font-mono text-[11px] text-bronze-dark/80">
+              Icke-vapeniserat. Passiv sensing och korrektionsutsl&auml;pp.
+              Aktivt jamming <span class="text-ink/80">ej</span> inom
+              kapacitetens ram.
+            </p>
+          </article>
+
+          <!-- Open-architecture modules on third-party hosts -->
+          <article class="border border-bronze/30 bg-cream p-7 lg:p-8 flex flex-col">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">&Ouml;ppen arkitektur</p>
+            <h3 class="font-sans font-light text-[1.5rem] tracking-tightheading text-ink">Moduler p&aring; tredjeparts-chassi</h3>
+            <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.16em] text-copper">Operationell flexibilitet utan att v&auml;xa kontraktsbredden</p>
+            <p class="mt-4 text-[15px] text-ink-soft leading-relaxed">
+              Dyno-modulerna &auml;r v&auml;dert&aring;liga (IP-klassade) som
+              baslinje och konstruerade f&ouml;r att f&auml;stas p&aring; det
+              konsortie-referenschassi som arkitekturen bygger p&aring;
+              <em>eller</em> p&aring; tredjeparts kommersiella chassi
+              &mdash; Husky, Bunker Pro, Spot-klass, amfibie-kapabla
+              plattformar fr&aring;n marina vendorer som Saab Kockums. Med
+              detta &ouml;ppnar arkitekturen f&ouml;r operativa milj&ouml;er
+              (strandn&auml;ra, sj&ouml;tr&auml;ng, fjordens kantmilj&ouml;er) som
+              ett rent landchassi inte n&aring;r, utan att Dyno tar p&aring;
+              sig marin chassiteknikutveckling. F&ouml;rst&auml;rker den
+              &ouml;ppna-system-pitch som l&aring;ngsiktig f&ouml;rs&ouml;rjnings&shy;trygghet
+              har som grund.
+            </p>
+            <p class="mt-4 font-mono text-[11px] text-bronze-dark uppercase tracking-[0.14em]">
+              Modulvattent&aring;lighet TRL 7&ndash;8 nu &middot; integration mot fler hosts TRL 5&ndash;6 nu &middot; 7&ndash;8 m&aring;l 2028
+            </p>
+            <p class="mt-2 font-mono text-[11px] text-bronze-dark/80">
+              Konsistent med befintlig Bunker Pro-precedens i arkitekturen.
+            </p>
+          </article>
+
+          <!-- Fire-perimeter-bundle -->
+          <article class="border border-bronze/30 bg-cream p-7 lg:p-8 flex flex-col">
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-bronze-dark mb-2">Civilskydds&shy;paket</p>
+            <h3 class="font-sans font-light text-[1.5rem] tracking-tightheading text-ink">Skogsbrandskonfiguration</h3>
+            <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.16em] text-copper">Civil-milit&auml;r synergi-demonstrator</p>
+            <p class="mt-4 text-[15px] text-ink-soft leading-relaxed">
+              En f&ouml;rkonfigurerad uppsl&auml;ppning av befintlig arkitektur
+              + Spool + fullsk&aring;lig Lantern f&ouml;r skogsbrandsrespons:
+              perimeteruppmaskning av brandfront via Scouts perception
+              och fullsk&aring;liga Lanterns akustik och termik, Spool-lagd
+              taktisk fiber till brand&shy;befallningens kommandopost,
+              Hand-placerade Lanterns f&ouml;r uth&aring;llig perimeter&shy;observation
+              under operationen. Demonstrerar att samma arkitektur som
+              tj&auml;nar F&ouml;rsvarsmaktens skyddsobjekt-perimeter ocks&aring;
+              tj&auml;nar MSB:s krisinsats &mdash; civil-milit&auml;r samverkan
+              som arkitekturegenskap, inte som tilll&auml;gg.
+            </p>
+            <p class="mt-4 font-mono text-[11px] text-bronze-dark uppercase tracking-[0.14em]">
+              Bundle TRL 4&ndash;5 nu (komponenterna mogna; konfigurations&shy;valideringen kvar)
+            </p>
+            <p class="mt-2 font-mono text-[11px] text-bronze-dark/80">
+              Tot&aring;lf&ouml;rsvars-anpassad. K&ouml;r p&aring; samma
+              <a href="#architecture" class="text-ink hover:text-copper">handoff-paket</a>
+              och oenighetsyta som den milit&auml;ra lanen.
+            </p>
+          </article>
+
+        </div>
+
+        <div class="mt-12 max-w-4xl">
+          <p class="text-[15px] text-ink-soft leading-relaxed">
+            Inga av de fyra kapaciteterna ovan &auml;ng&aring;r Fas 1-demonstrationerna
+            som Dyno Robotics &aring;tar sig att leverera. De namnges h&auml;r som
+            <em>utvecklingsm&aring;l som arkitekturen &auml;r byggd f&ouml;r att v&auml;xa
+            in i</em>, med &auml;rlig TRL-markering per kapacitet och utan att
+            l&auml;na sig p&aring; externa partners f&ouml;r genomf&ouml;rande &mdash;
+            partneridentifiering aktualiseras efter inl&auml;mning beroende p&aring; utfall.
+            Vantor namnges som mjukvarupartner d&auml;r samtal redan p&aring;g&aring;r.
+          </p>
         </div>
       </div>
     </section>
